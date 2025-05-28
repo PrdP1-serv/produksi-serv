@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 20px;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+
+      h2 {
+        color: #2c3e50;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+
+      th, td {
+        border: 1px solid #ddd;
+        padding: 10px 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #2980b9;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      input[type="text"], select {
+        width: 100%;
+        padding: 5px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+
+      button {
+        padding: 6px 12px;
+        background-color: #3498db;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+      }
+
+      button:hover {
+        background-color: #2980b9;
+      }
+
+      #table-container {
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Data PO Release</h2>
+    <div id="table-container">Loading...</div>
+
+    <script>
+      function renderTable(data) {
+        const container = document.getElementById('table-container');
+        let html = `<table>
+                      <tr>
+                        <th>RELEASE</th>
+                        <th>PO</th>
+                        <th>MESIN</th>
+                        <th>PLANQTY</th>
+                        <th>BARCODE</th>
+                        <th>STATUS</th>
+                        <th>PENGGANTI / KETERANGAN</th>
+                        <th>ACTION</th>
+                      </tr>`;
+
+        for (let i = 1; i < data.length; i++) {
+          const row = data[i];
+          html += `<tr>
+                    <td>${row[0] || ''}</td>
+                    <td>${row[1] || ''}</td>
+                    <td>${row[2] || ''}</td>
+                    <td>${row[3] || ''}</td>
+                    <td>${row[4] || ''}</td>
+                    <td>
+                      <select id="status-${i}">
+                        <option value="" ${row[5] === '' ? 'selected' : ''}></option>                      
+                        <option value="Ganti PO" ${row[5] === 'Ganti PO' ? 'selected' : ''}>Ganti PO</option>
+                        <option value="Lanjut Proses" ${row[5] === 'Lanjut Proses' ? 'selected' : ''}>Lanjut Proses</option>
+                        <option value="Release Ulang" ${row[5] === 'Release Ulang' ? 'selected' : ''}>Release Ulang</option>                        
+                        <option value="Lain-lain" ${row[5] === 'Lain-lain' ? 'selected' : ''}>Lain-lain</option>
+                      </select>
+                    </td>
+                    <td><input type="text" id="pengganti-${i}" value="${row[6] || ''}" /></td>
+                    <td><button onclick="save(${i})">Simpan</button></td>
+                  </tr>`;
+        }
+
+        html += `</table>`;
+        container.innerHTML = html;
+      }
+
+      function save(index) {
+        const status = document.getElementById(`status-${index}`).value;
+        const pengganti = document.getElementById(`pengganti-${index}`).value;
+        google.script.run.updateRow(index, status, pengganti);
+      }
+
+      google.script.run.withSuccessHandler(renderTable).getData();
+    </script>
+  </body>
+</html>
