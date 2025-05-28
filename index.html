@@ -3,69 +3,7 @@
   <head>
     <base target="_top">
     <style>
-      body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 20px;
-        background-color: #f9f9f9;
-        color: #333;
-      }
-
-      h2 {
-        color: #2c3e50;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 15px;
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      }
-
-      th, td {
-        border: 1px solid #ddd;
-        padding: 10px 8px;
-        text-align: left;
-      }
-
-      th {
-        background-color: #2980b9;
-        color: white;
-        position: sticky;
-        top: 0;
-        z-index: 1;
-      }
-
-      tr:nth-child(even) {
-        background-color: #f2f2f2;
-      }
-
-      input[type="text"], select {
-        width: 100%;
-        padding: 5px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-      }
-
-      button {
-        padding: 6px 12px;
-        background-color: #3498db;
-        border: none;
-        border-radius: 4px;
-        color: white;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background-color 0.2s ease;
-      }
-
-      button:hover {
-        background-color: #2980b9;
-      }
-
-      #table-container {
-        overflow-x: auto;
-      }
+      /* [CSS Anda tetap sama] */
     </style>
   </head>
   <body>
@@ -73,37 +11,51 @@
     <div id="table-container">Loading...</div>
 
     <script>
+      // Fungsi utama
+      async function loadData() {
+        try {
+          const apiUrl = 'https://script.google.com/macros/s/AKfycbxcqnQbxvfXr1i32yE_V5ghwDEoeQV2FwOvXt1mwYKMCHN-cNr3Psur_2sDHURmXA3b1Q/exec?action=getdata';
+          const response = await fetch(apiUrl);
+          const data = await response.json();
+          renderTable(data);
+        } catch (error) {
+          console.error("Error loading data:", error);
+          document.getElementById('table-container').innerHTML = "Error loading data. Please try again.";
+        }
+      }
 
-
-  // Ganti fungsi loadData()
-  async function loadData() {
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbxcqnQbxvfXr1i32yE_V5ghwDEoeQV2FwOvXt1mwYKMCHN-cNr3Psur_2sDHURmXA3b1Q/exec?action=getdata';
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    renderTable(data);
-  }
-
-  // Ganti fungsi save()
-  async function save(index) {
-    const status = document.getElementById(`status-${index}`).value;
-    const pengganti = document.getElementById(`pengganti-${index}`).value;
-    
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbxcqnQbxvfXr1i32yE_V5ghwDEoeQV2FwOvXt1mwYKMCHN-cNr3Psur_2sDHURmXA3b1Q/exec';
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ index, status, pengganti })
-    });
-    
-    const result = await response.json();
-    if (result.success) alert("Data tersimpan!");
-  }
-
-  // Panggil loadData() saat halaman dimuat
-  window.onload = loadData;
+      async function save(index) {
+        try {
+          const status = document.getElementById(`status-${index}`).value;
+          const pengganti = document.getElementById(`pengganti-${index}`).value;
+          
+          const apiUrl = 'https://script.google.com/macros/s/AKfycbxcqnQbxvfXr1i32yE_V5ghwDEoeQV2FwOvXt1mwYKMCHN-cNr3Psur_2sDHURmXA3b1Q/exec';
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ index, status, pengganti })
+          });
+          
+          const result = await response.json();
+          if (result.success) {
+            alert("Data tersimpan!");
+            loadData(); // Refresh data setelah simpan
+          } else {
+            alert("Gagal menyimpan data");
+          }
+        } catch (error) {
+          console.error("Error saving data:", error);
+          alert("Error saving data. Please check console.");
+        }
+      }
 
       function renderTable(data) {
         const container = document.getElementById('table-container');
+        if (!data || data.length <= 1) {
+          container.innerHTML = "No data available";
+          return;
+        }
+
         let html = `<table>
                       <tr>
                         <th>RELEASE</th>
@@ -141,7 +93,9 @@
         html += `</table>`;
         container.innerHTML = html;
       }
-      google.script.run.withSuccessHandler(renderTable).getData();
+
+      // Panggil loadData saat halaman dimuat
+      document.addEventListener('DOMContentLoaded', loadData);
     </script>
   </body>
 </html>
