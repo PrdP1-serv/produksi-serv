@@ -73,6 +73,35 @@
     <div id="table-container">Loading...</div>
 
     <script>
+
+
+  // Ganti fungsi loadData()
+  async function loadData() {
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbxcqnQbxvfXr1i32yE_V5ghwDEoeQV2FwOvXt1mwYKMCHN-cNr3Psur_2sDHURmXA3b1Q/exec?action=getdata';
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    renderTable(data);
+  }
+
+  // Ganti fungsi save()
+  async function save(index) {
+    const status = document.getElementById(`status-${index}`).value;
+    const pengganti = document.getElementById(`pengganti-${index}`).value;
+    
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbxcqnQbxvfXr1i32yE_V5ghwDEoeQV2FwOvXt1mwYKMCHN-cNr3Psur_2sDHURmXA3b1Q/exec';
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ index, status, pengganti })
+    });
+    
+    const result = await response.json();
+    if (result.success) alert("Data tersimpan!");
+  }
+
+  // Panggil loadData() saat halaman dimuat
+  window.onload = loadData;
+
       function renderTable(data) {
         const container = document.getElementById('table-container');
         let html = `<table>
@@ -112,13 +141,6 @@
         html += `</table>`;
         container.innerHTML = html;
       }
-
-      function save(index) {
-        const status = document.getElementById(`status-${index}`).value;
-        const pengganti = document.getElementById(`pengganti-${index}`).value;
-        google.script.run.updateRow(index, status, pengganti);
-      }
-
       google.script.run.withSuccessHandler(renderTable).getData();
     </script>
   </body>
