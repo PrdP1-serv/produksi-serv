@@ -14,7 +14,7 @@
       // Fungsi utama
       async function loadData() {
         try {
-          const apiUrl = 'https://script.google.com/macros/s/AKfycbx-NyddBwBOB7oqaklXMWrobK_nORiByvREkKY022mt5X21-C7HrvDTifjWwTfzm1Ba/exec?action=getdata';
+          const apiUrl = 'https://script.google.com/macros/s/AKfycbzaEaW85dRtwBij9Ov_jwHcTVq1bppUG1Xh2MvzJGJDdhHTgrIyTWRyJmJgC520dDci/exec?action=getdata';
           const response = await fetch(apiUrl);
           const data = await response.json();
           renderTable(data);
@@ -29,7 +29,7 @@
           const status = document.getElementById(`status-${index}`).value;
           const pengganti = document.getElementById(`pengganti-${index}`).value;
           
-          const apiUrl = 'https://script.google.com/macros/s/AKfycbx-NyddBwBOB7oqaklXMWrobK_nORiByvREkKY022mt5X21-C7HrvDTifjWwTfzm1Ba/exec';
+          const apiUrl = 'https://script.google.com/macros/s/AKfycbzaEaW85dRtwBij9Ov_jwHcTVq1bppUG1Xh2MvzJGJDdhHTgrIyTWRyJmJgC520dDci/exec';
           const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
