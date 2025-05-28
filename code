@@ -1,0 +1,20 @@
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile('Index')
+    .setTitle('Simple PO Release')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function getData() {
+  const ss = SpreadsheetApp.openById('1O23XUSec7hok1ek4Z1CmWZchCFnFMwxW0XC84NVG364');
+  const sheet = ss.getSheetByName('PO Release');
+  const data = sheet.getDataRange().getValues();
+  return data;
+}
+
+function updateRow(index, status, pengganti) {
+  const ss = SpreadsheetApp.openById('1O23XUSec7hok1ek4Z1CmWZchCFnFMwxW0XC84NVG364');
+  const sheet = ss.getSheetByName('PO Release');
+  sheet.getRange(index + 1, 6).setValue(status);      // kolom STATUS (kolom F)
+  sheet.getRange(index + 1, 7).setValue(pengganti);   // kolom PENGGANTI (kolom G)
+  return true;
+}
