@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Pengajuan Closing PO Produksi</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">Aplikasi PO</div>
+      <div class="nav-toggle" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="https://lookerstudio.google.com/reporting/f2ea29d6-bcef-4028-a679-27a3719d7fd7" target="_blank">Dashboar Closing PO</a></li>    
+        <li><a href="https://script.google.com/macros/s/AKfycbx1JN0AI469yIcmrEkIBDfTjp4UhIf3ec2vjl-QK8LP1JGJLYl2x7JNUllRO6hrGMb2yQ/exec" target="_blank">Update BOM</a></li>
+        <li><a href="https://lookerstudio.google.com/reporting/a1fa5b0b-e65a-4e08-b15e-ae364097a8fe" target="_blank">Stok Waste</a></li>
+        <li><a href="#" target="_blank">Kontak</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h1>Data Pengajuan Closing PO Produksi</h1>
+    </div>
+    <div id="error" class="error"></div>
+    <div id="loading" class="loading">Menyimpan...</div>
+    
+    <div class="table-container">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal Pengajuan</th>
+              <th>Tanggal Close</th>              
+              <th>Kode Map PO</th>
+              <th>Waktu Penyerahan</th>
+              <th>No PO</th>
+              <th>Status</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="pagination">
+      <button id="prevBtn" onclick="prevPage()">Sebelumnya</button>
+      <span id="pageInfo" class="pagination-info"></span>
+      <button id="nextBtn" onclick="nextPage()">Berikutnya</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
