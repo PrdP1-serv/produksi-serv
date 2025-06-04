@@ -75,7 +75,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   min-width: 800px;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   position: relative;
 }
 
@@ -96,7 +96,7 @@ thead th {
 }
 
 tbody td {
-  padding: 0.5rem;
+  padding: 0.2rem;
   border-bottom: 1px solid var(--border-color);
   vertical-align: top;
   background-color: white;
